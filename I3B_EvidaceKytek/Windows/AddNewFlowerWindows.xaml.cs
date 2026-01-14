@@ -22,6 +22,7 @@ namespace I3B_EvidaceKytek.Windows
     public partial class AddNewFlowerWindows : Window
     {
         IFlowerManager _manager;
+        public Flower NewFlower { get; private set; }
         public AddNewFlowerWindows(IFlowerManager manager)
         {
             InitializeComponent();
@@ -45,19 +46,17 @@ namespace I3B_EvidaceKytek.Windows
         {
             string name = NameInput.Text;
             string genus = GenusInput.Text;
-            string color = ColorInput.SelectedValue.ToString();
-            if(name.Length > 2 || genus.Length > 2 || ColorInput.SelectedIndex  != -1)
+            string color = ColorInput.Text;
+            if (name.Length > 2 || genus.Length > 2 || ColorInput.SelectedIndex  != -1)
             {
                 return new Flower { Name = name,
                     Genus = genus,
                     Color = color
                 };
+
             }
             throw new Exception("The input data are incorrect!");
-            return new Flower { Name = name,
-                Genus = genus,
-                Color = color
-            };
+            
         }
     }
 }

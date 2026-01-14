@@ -24,6 +24,7 @@ namespace I3B_EvidaceKytek
     public partial class MainWindow : Window
     {
         ObservableCollection<Flower> Data { get; set; }
+        public Flower NewFlower { get; private set; }
         public IFlowerManager Manager { get; set; }
         public MainWindow()
         {
@@ -35,16 +36,23 @@ namespace I3B_EvidaceKytek
             LV.ItemsSource = Data;
         }
 
-        private void OnSaveClick(object sender, EventArgs e)
+        private void OnSaveClick(object sender, RoutedEventArgs e)
         {
             AddNewFlowerWindows AddWindow = new(Manager);
-            AddWindow.Closing += (s, e) =>
-            {
-                Data.Clear();   
-                 LV.ItemsSource = Data;
-            };
 
+            AddWindow.Closed += (s, e) => { Data.Add(AddWindow.NewFlower); };
+            
             AddWindow.ShowDialog();
+        }
+        
+        private void RemoveOnClick(object sender, RoutedEventArgs e)
+        {
+            Flower toRemove = LV.SelectedItem as Flower;
+            if (toRemove != null)
+            {
+                Manager.Remove(toRemove);
+                Data.Remove(toRemove);
+            }
         }
     }
 }
